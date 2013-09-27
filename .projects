@@ -80,3 +80,17 @@ function rtsmoking_env()
 source ~/.env/.rtsmoking_environment
 
 }
+
+function asd_adhd_env()
+{
+
+source ~/.env/.asd_adhd_env
+
+}
+
+function isn_env()
+{
+
+source ~/.env/.isn_env
+
+}
