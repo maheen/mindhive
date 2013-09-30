@@ -78,7 +78,7 @@ function isn()
         echo "Setting subjects dir to $subjdir"
         export SUBJECTS_DIR=$subjdir
         }
-asdadhd
+isn
 
 # VIM mode
 set -o vi
