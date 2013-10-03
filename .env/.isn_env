@@ -1,22 +1,33 @@
 #! /bin/bash
-# setup python PATH. This will initially be set to those similar to 
-# Anisha's for the BrainImagingPipeline
-export PYTHONPATH=:~keshavan/lib/python2.7/site-packages/:$PYTHONPATH
+
+export PYTHONPATH=/software/python/EPD/current/bin
 
 # Setup permissions
 umask 003
 
-# Set up PATH for ANTS
-export PATH=/software/ANTS/versions/120325:$PATH
-export PATH=$PATH:/software/ANTS-dev/bin
-export ANTSPATH=/software/ANTS/versions/120325/
-export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1
+# Source Nipype, FSL, Freesurfer
+source /etc/fsl/5.0/fsl.sh
+source /software/common/bin/fss 5.3.0 > /dev/null
 
-# Set up PATH for PyMVPA
-#export PATH=/software/pymvpa/bin:$PATH
+# add PATHs
+export ANTSPATH=/software/ANTS/versions/130823
+export DTIPrepPATH=/software/DTIPrep/130630
+export AFNIPATH=/usr/lib/afni/bin
+export PATH=$AFNIPATH:$DTIPrepPATH:$ANTSPATH:$PATH
 
-# Set up PATH for DWI Convert
-export PATH=/software/DTIPrep/130630:$PATH
+export PATH=/software/python/anaconda/bin:$PATH
+source activate resting
+
+# Freesurfer
+export SUBJECTS_DIR=/mindhive/xnat/surfaces/isn
+
+# Multithreading
+export MKL_NUM_THREADS=4
+export OMP_NUM_THREADS=4
+
+# Project name for prompt
+export project_name="ISN"
+module add matlab
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -64,22 +75,6 @@ alias ip='ipython --no-banner'
 alias spm='matlab -r "try, spm fmri, end"'
 alias iqstat='~tkp/bin/iqstat'
 
-# PROJECTS
-alias cdbgfu='cd /mindhive/gablab/BGFU'
-alias cdgatesmotmem='cd /mindhive/gablab/GATES_motmem'
-alias cdscratch='cd /mindhive/scratch/amattfel'
-
-# Freesurfer
-function isn()
-        {
-        #. fss 5.3.0
-        source /software/common/bin/fss 5.3.0 > /dev/null
-        subjdir=/mindhive/xnat/surfaces/isn/
-        echo "Setting subjects dir to $subjdir"
-        export SUBJECTS_DIR=$subjdir
-        }
-isn
-
 # VIM mode
 set -o vi
 
@@ -92,7 +87,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/software/local/lib
 
 . /etc/fsl/fsl.sh
 
-. /software/common/bin/fss 5.3.0
 
 # Setup PATH for all of the software
 export PATH=/software/python/EPD/current/bin:$PATH
@@ -101,14 +95,13 @@ export PATH=/software/python/pycharm-1.5.3/bin:$PATH
 export PATH=/software/common/bin:$PATH
 export PATH=/software/spm8/:$PATH
 export PATH=/software/afni/:$PATH
-export PATH=~keshavan/bin/:$PATH
 export PATH=/usr/lib/mrtrix/bin/:$PATH
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/mrtrix/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
-source /software/python/setup-nipype-0.7.sh
-source /software/python/EPD/virtualenvs/7.2/nipype0.5/bin/activate
+#source /software/python/setup-nipype-0.7.sh
+#source /software/python/EPD/virtualenvs/7.3/nipype0.7/bin/activate
 
 # Setup the torque parallelization queue:
 if [ -f /etc/profile.d/modules.sh ]
