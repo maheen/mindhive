@@ -94,3 +94,10 @@ function isn_env()
 source ~/.env/.isn_env
 
 }
+
+function miepic_env()
+{
+
+source ~/.env/.miepic_env
+
+}
